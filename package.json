@@ -21,9 +21,11 @@
   },
   "homepage": "https://github.com/artikas/fn-throttler#readme",
   "dependencies": {
-    "bluebird": "^3.3.4"
+    "bluebird": "^3.3.4",
+    "mongodb": "^2.1.11"
   },
   "devDependencies": {
     "mocha": "^2.4.5"
-  }
+  },
+  "engine": "node 5.5.0"
 }
