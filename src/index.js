@@ -56,7 +56,9 @@ function Throttler(options) {
   }
 
   return {
-    run: run
+    run: run,
+    getOK: getOK,
+    getCount: getCount,
   };
 }
 

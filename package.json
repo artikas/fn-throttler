@@ -4,7 +4,7 @@
   "description": "Function throttler using mongodb for multicore synchronization",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive",
     "start": "debug=* nodemon -e html,js,css ./index.js --ignore 'bower_components' --ignore 'node_modules'"
   },
   "repository": {
@@ -22,5 +22,8 @@
   "homepage": "https://github.com/artikas/fn-throttler#readme",
   "dependencies": {
     "bluebird": "^3.3.4"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
   }
 }
