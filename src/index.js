@@ -6,10 +6,11 @@ function Throttler(options) {
   var retryInterval = options.retryInterval || 1000;
   var db = options.db;
   var key = options.key || 'default_key';
+  var collectionName = options.collection || 'fn-throttler';
 
   function getCount() {
     var timestamp = Date.now();
-    return db.collection('throttling')
+    return db.collection(collectionName)
       .findOneAndUpdate({
         key: key + '_' + Math.floor(timestamp / 1000)
       }, {
@@ -43,7 +44,6 @@ function Throttler(options) {
               .then(resolve, reject);
           }, d => {
             if (d === 'WAIT') {
-              console.log('retrying...');
               return Promise.delay(retryInterval)
                 .then(retryFunction);
             } else throw d;
