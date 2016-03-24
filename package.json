@@ -1,6 +1,6 @@
 {
   "name": "fn-throttler",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Function throttler using mongodb for multicore synchronization",
   "main": "index.js",
   "scripts": {

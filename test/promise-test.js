@@ -35,9 +35,38 @@ describe('Retrieve OK to go ahead', function() {
       .then(console.log, e => assert.fail(e, 'WAIT'));
   });
 
+  it('spreads requests across time', function() {
+    this.timeout(10000);
+
+    var th = Throttler({
+      maxPerSecond: 1,
+      db: db,
+    });
+
+    function fn(d) {
+      return [d, new Date()];
+    }
+
+    return Promise.map([1, 2, 3, 4, 5], d => {
+        return Promise.resolve(d)
+          .then(th.next)
+          .then(fn);
+      })
+      .then(d => {
+        d.forEach((x, i) => i && assert(d[i][1] - d[i - 1][1] > 1000));
+        console.log(d);
+      });
+  });
+
   after(function(done) {
     db.collection('test').remove({})
       .then(() => done());
   });
+
+});
+
+
+describe('throttler', function() {
+
 
 });

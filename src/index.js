@@ -7,6 +7,8 @@ function Throttler(options) {
   var db = options.db;
   var key = options.key || 'default_key';
   var collectionName = options.collection || 'fn-throttler';
+  var outstanding = 0;
+  var maxRetries = options.maxRetries || Infinity;
 
   function getCount() {
     var timestamp = Date.now();
@@ -35,7 +37,6 @@ function Throttler(options) {
   }
 
   function run(fn, args) {
-    // todo: eliminate new Promise. Only workaround for dealing with 'spread' after the promise
     return new Promise(function(resolve, reject) {
       function retryFunction() {
         return getOK()
@@ -55,10 +56,27 @@ function Throttler(options) {
     });
   }
 
+  function next(data, retry) {
+    if (!retry) outstanding += 1;
+    return getCount()
+      .then(d => {
+        if (d.value.counter <= maxPerSecond) {
+          outstanding -= 1;
+          return data;
+        } else if (retry > maxRetries)
+          throw 'MAX_RETRIES';
+        else
+          return Promise.delay(retryInterval)
+            .then(() => next(data, (retry || 0) + 1));
+      });
+  }
+
   return {
     run: run,
     getOK: getOK,
     getCount: getCount,
+    next: next,
+    outstanding: outstanding,
   };
 }
 
