@@ -1,7 +1,7 @@
 {
   "name": "fn-throttler",
-  "version": "0.0.3",
-  "description": "Function throttler using mongodb for multicore synchronization",
+  "version": "0.0.4",
+  "description": "Function throttler using mongodb for multicore and multicluster synchronization",
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive",

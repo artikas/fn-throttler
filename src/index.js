@@ -51,7 +51,6 @@ function Throttler(options) {
           })
           .catch(e => console.log('error:' + e));
       }
-
       return retryFunction();
     });
   }
@@ -63,11 +62,10 @@ function Throttler(options) {
         if (d.value.counter <= maxPerSecond) {
           outstanding -= 1;
           return data;
-        } else if (retry > maxRetries)
-          throw 'MAX_RETRIES';
-        else
-          return Promise.delay(retryInterval)
-            .then(() => next(data, (retry || 0) + 1));
+        }
+        if (retry > maxRetries) throw 'MAX_RETRIES';
+        return Promise.delay(retryInterval)
+          .then(() => next(data, (retry || 0) + 1));
       });
   }
 
