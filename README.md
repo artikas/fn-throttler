@@ -14,7 +14,8 @@
 var Throttler = require('fn-throttler');
 
     var th = new Throttler({
-      maxPerSecond: 100,
+      max: 100,
+      unit: 'second',
       retryInterval: 1000,
       db: $db,
     });
@@ -33,6 +34,14 @@ var Throttler = require('fn-throttler');
 
 }
 ```
+
+### `th.getOK()`
+
+Increases request count by 1. Promise resolves if the rate limit hasn't been reached yet. Otherwise the promise is rejected.
+
+### `th.next(data, retry)`
+
+Similar to getOK(), but retries on rejection until the retry limit (if any) is reached. Resolves with 'data' so that next() can be easily used as a promise in the promise chain.
 
 [npm-image]: https://img.shields.io/npm/v/fn-throttler.svg
 [npm-url]: https://npmjs.org/package/fn-throttler

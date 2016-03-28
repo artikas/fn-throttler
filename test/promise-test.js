@@ -42,6 +42,7 @@ describe('Retrieve OK to go ahead', function() {
 
     var th = Throttler({
       max: 1,
+      unit: 'second',
       db: db,
     });
 
