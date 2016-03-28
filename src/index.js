@@ -3,7 +3,6 @@ var Promise = require("bluebird");
 function Throttler(options) {
 
   var max = options.max || 100;
-  var retryInterval = options.retryInterval || 1000;
   var unit = options.unit || 'second';
   var db = options.db;
   var key = options.key || 'default_key';
@@ -17,7 +16,8 @@ function Throttler(options) {
     'hour': 1000 * 60 * 60,
     'day': 1000 * 60 * 60 * 24,
   };
-  var denominator = unitLookup[unit] || 1000;
+  var denominator = typeof unit === 'string' ? (unitLookup[unit] || 1000) : unit;
+  var retryInterval = options.retryInterval || denominator;
 
   function getCount() {
     var timestamp = Date.now();
