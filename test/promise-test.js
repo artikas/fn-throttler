@@ -18,7 +18,8 @@ describe('Retrieve OK to go ahead', function() {
   it('should get initial ok', function() {
     var th = Throttler({
       collection: 'test',
-      maxPerSecond: 1,
+      max: 1,
+      unit: 'second',
       db: db,
     });
     return th.getOK()
@@ -27,7 +28,8 @@ describe('Retrieve OK to go ahead', function() {
 
   it('should get a WAIT after initial OK', function() {
     var th = Throttler({
-      maxPerSecond: 1,
+      max: 1,
+      unit: 'second',
       db: db,
     });
     th.getOK();
@@ -39,7 +41,7 @@ describe('Retrieve OK to go ahead', function() {
     this.timeout(10000);
 
     var th = Throttler({
-      maxPerSecond: 1,
+      max: 1,
       db: db,
     });
 
