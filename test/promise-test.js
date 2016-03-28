@@ -56,7 +56,7 @@ describe('Retrieve OK to go ahead', function() {
           .then(fn);
       })
       .then(d => {
-        d.forEach((x, i) => i && assert(d[i][1] - d[i - 1][1] >= 1000));
+        d.forEach((x, i) => i && assert(Math.abs(d[i][1] - d[i - 1][1]) >= 1000));
         console.log(d);
       });
   });
@@ -68,8 +68,6 @@ describe('Retrieve OK to go ahead', function() {
 
 });
 
-
 describe('throttler', function() {
-
 
 });
