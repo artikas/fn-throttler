@@ -36,16 +36,17 @@ The following options are currently available:
 * `collectionName` - MongoDB collection name
 * `maxRetries` - Maximum number of retries nextToken() will attempt before rejecting. If not specified, nextToken() will keep reattempting until it resolves.
 * `retryInterval` - Interval between attempts. Defautls to 1000ms.
+
 ### 2.) Throttle
 ```javascript
 
 
-  function throttleFunction() {
+  function throttlePromise() {
     ...
     //throttle - will check the limit and either fulfill or retry after a delay
     return th.nextToken()
     .then(()=>{
-      return myfunction();
+      return myPromise();
     }
 
 }
