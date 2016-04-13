@@ -30,7 +30,7 @@ var Throttler = require('fn-throttler');
 The following options are currently available:
 
 * `max` - Maximum attempts per time interval. Defautls to 100.
-* `unit` - Unit for time interval. Defaults to second.
+* `unit` - Unit for time interval. Supports 'second', 'minute', 'hour' and 'day'. Defaults to 'second'. Can take a numeric value in ms to support an arbitrary time unit. For example to enforce a limit per 5 minutes, 'unit' would be 300000 (1000 * 60 * 5).
 * `db` - MongoDB connection
 * `key` - Unique key for object. Defaults to 'default_key'.
 * `collectionName` - MongoDB collection name
