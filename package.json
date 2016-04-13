@@ -1,7 +1,7 @@
 {
   "name": "fn-throttler",
-  "version": "0.0.6",
-  "description": "Function throttler using mongodb for multicore and multicluster synchronization",
+  "version": "0.1.0",
+  "description": "Throttling for promises (or functions) using MongoDB for multicore and multicluster synchronization",
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/artikas/fn-throttler.git"
   },
   "keywords": [
-    "throttler"
+    "throttler", "rate", "limiting", "throttling", "limiter"
   ],
   "author": "artikas",
   "license": "MIT",
