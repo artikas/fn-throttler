@@ -22,7 +22,7 @@ describe('Retrieve OK to go ahead', function() {
       unit: 'second',
       db: db,
     });
-    return th.getOK()
+    return th.getToken()
       .then(d => assert.equal(d, 'OK'));
   });
 
@@ -32,8 +32,8 @@ describe('Retrieve OK to go ahead', function() {
       unit: 'second',
       db: db,
     });
-    th.getOK();
-    th.getOK()
+    th.getToken();
+    th.getToken()
       .then(console.log, e => assert.fail(e, 'WAIT'));
   });
 
@@ -52,7 +52,7 @@ describe('Retrieve OK to go ahead', function() {
 
     return Promise.map([1, 2, 3, 4, 5], d => {
         return Promise.resolve(d)
-          .then(th.next)
+          .then(th.nextToken)
           .then(fn);
       })
       .then(d => {
@@ -77,7 +77,7 @@ describe('Retrieve OK to go ahead', function() {
 
     return Promise.map([1, 2, 3, 4, 5], d => {
         return Promise.resolve(d)
-          .then(th.next)
+          .then(th.nextToken)
           .then(fn);
       })
       .then(d => d.forEach((x, i) => i && assert(Math.abs(d[i][1] - d[i - 1][1]) >= 500)));

@@ -7,7 +7,7 @@ function Throttler(options) {
   var db = options.db;
   var key = options.key || 'default_key';
   var collectionName = options.collection || 'fn-throttler';
-  var outstanding = 0;
+  var outstandingReqs = 0;
   var maxRetries = options.maxRetries || Infinity;
 
   var unitLookup = {
@@ -19,7 +19,7 @@ function Throttler(options) {
   var denominator = typeof unit === 'string' ? (unitLookup[unit] || 1000) : unit;
   var retryInterval = options.retryInterval || denominator;
 
-  function getCount() {
+  function getCurrentCount() {
     var timestamp = Date.now();
     return db.collection(collectionName)
       .findOneAndUpdate({
@@ -37,18 +37,18 @@ function Throttler(options) {
       });
   }
 
-  function getOK() {
-    return getCount()
+  function getToken(data) {
+    return getCurrentCount()
       .then(d => {
-        if (d.value.counter <= max) return 'OK';
+        if (d.value.counter <= max) return (data || 'OK');
         throw 'WAIT';
       });
   }
 
-  function run(fn, args) {
+  function runFn(fn, args) {
     return new Promise(function(resolve, reject) {
       function retryFunction() {
-        return getOK()
+        return getToken()
           .then(() => {
             return Promise.resolve(fn(args))
               .then(resolve, reject);
@@ -64,26 +64,27 @@ function Throttler(options) {
     });
   }
 
-  function next(data, retry) {
-    if (!retry) outstanding += 1;
-    return getCount()
+  function nextToken(data, retry) {
+    if (!retry) outstandingReqs += 1;
+    return getCurrentCount()
       .then(d => {
         if (d.value.counter <= max) {
-          outstanding -= 1;
+          outstandingReqs -= 1;
           return data;
         }
         if (retry > maxRetries) throw 'MAX_RETRIES';
         return Promise.delay(retryInterval)
-          .then(() => next(data, (retry || 0) + 1));
+          .then(() => nextToken(data, (retry || 0) + 1));
       });
   }
 
   return {
-    run: run,
-    getOK: getOK,
-    getCount: getCount,
-    next: next,
-    outstanding: outstanding,
+    runFn: runFn,
+    getToken: getToken,
+    getCurrentCount: getCurrentCount,
+    nextToken: nextToken,
+    outstandingReqs: outstandingReqs,
+    options: options,
   };
 }
 
