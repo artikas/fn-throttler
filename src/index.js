@@ -2,7 +2,7 @@ var Promise = require("bluebird");
 
 function Throttler(options) {
 
-  var max = options.max || 100;
+  var max = options.max || Infinity;
   var unit = options.unit || 'second';
   var db = options.db;
   var key = options.key || 'default_key';
